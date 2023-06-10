@@ -13,3 +13,5 @@ module Device : sig
   val create : int -> t
   val shutdown : t -> (unit, Portmidi.Portmidi_error.t) result
 end
+
+type note_data = { note : char; volume : char}

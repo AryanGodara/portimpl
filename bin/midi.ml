@@ -9,6 +9,7 @@ match Portmidi.initialize () with
   | Ok () -> ()
   | Error _ -> failwith "error initializing portmidi"
 
+type note_data = { note : char; volume : char}
 
 
 (** Define the message_on and message_off functions that need to be called to with a 5s delay in between *)
