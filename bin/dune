@@ -1,0 +1,4 @@
+(executable
+ (public_name portimpl)
+ (name main)
+ (libraries portimpl portmidi))
