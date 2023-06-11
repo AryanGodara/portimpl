@@ -1,5 +1,5 @@
-(* open Cmdliner
 
+(* open Cmdliner
 
 (* Command Line interface *)
 let _ = "Note_on, wait 5 seconds, then Note_5"
@@ -23,6 +23,12 @@ let main () =
   let status = char_of_int (128 lor channel) in
   let message = Portmidi.write_output *)
   (* let event = Midi.message_on ~note ~timestamp:0l ~volume ~channel () in *)
-  Midi.(write_output dev [ message_on ~note ~timestamp:0l ~volume ~channel () ])
+  Midi.(
+    write_output dev [ message_on ~note ~timestamp:0l ~volume ~channel () ];
+
+    Unix.sleep 5;
+
+    write_output dev [ message_off ~note ~timestamp:0l ~volume ~channel () ];
+    )
 
 let () = main ()
