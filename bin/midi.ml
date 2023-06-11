@@ -1,3 +1,5 @@
+open! Util
+open Result.Syntax
 module Event = Portmidi.Portmidi_event
 
 (* ? MODULE DEVICE *)
@@ -14,7 +16,7 @@ module Device = struct
         (* let err = Printf.sprintf "Can't find midi device with id %i.Is it connected?" device_id in failwith err *)
     | Ok device -> { device; device_id }
 
-  (* let turn_off_everything device_id =
+  let turn_off_everything device_id =
     let device = create device_id in
     let* _ =
       Portmidi.write_output device.device
@@ -27,7 +29,7 @@ module Device = struct
   let shutdown { device; device_id } =
     let* _ = Portmidi.close_output device in
     Unix.sleepf 0.5;
-    turn_off_everything device_id *)
+    turn_off_everything device_id
 end
 
 

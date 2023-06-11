@@ -8,6 +8,7 @@ let () = print_endline "write the rest of the program" *)
 (* open Portmidi *)
 
 let main () =
+  let handle_result = function Ok _ -> () | Error _ -> () in
   (* initialize Portmidi *)
   (* let midi = Portmidi.initialize () in *)
 
@@ -29,6 +30,9 @@ let main () =
     Unix.sleep 5;
 
     write_output dev [ message_off ~note ~timestamp:0l ~volume ~channel () ];
+
+    Device.turn_off_everything 0 |> handle_result;
+    Device.shutdown dev |> handle_result;
     )
 
 let () = main ()
