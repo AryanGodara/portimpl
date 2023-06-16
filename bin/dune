@@ -1,4 +1,4 @@
 (executable
  (public_name portimpl)
  (name main)
- (libraries portimpl cmdliner portmidi runtime_events unix))
+ (libraries portimpl logs portmidi runtime_events unix))

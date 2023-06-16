@@ -1,6 +1,9 @@
-open! Util
-open Result.Syntax
+open Midi_util.Syntax
 module Event = Portmidi.Portmidi_event
+
+(* Initialize the Logs module *)
+let init_logs () =
+Logs.set_level (Some Logs.Info)
 
 (* ? MODULE DEVICE *)
 module Device = struct
@@ -10,10 +13,8 @@ module Device = struct
   let create device_id =
     match Portmidi.open_output ~device_id ~buffer_size:0l ~latency:1l with
     | Error _ ->
-        Printf.eprintf "Can't find midi device with id: %i\nIs it connected?\n"
-          device_id;
+        Logs.err (fun m -> m "Can't find midi device with id: %i\nIs it connected?\n" device_id);
         exit 1
-        (* let err = Printf.sprintf "Can't find midi device with id %i.Is it connected?" device_id in failwith err *)
     | Ok device -> { device; device_id }
 
   let turn_off_everything device_id =
@@ -38,7 +39,7 @@ end
 let error_to_string msg = 
   Portmidi.Portmidi_error.sexp_of_t msg |> Sexplib0.Sexp.to_string
 
-let () = 
+let init () = 
 match Portmidi.initialize () with
   | Ok () -> ()
   | Error _ -> failwith "error initializing portmidi"
@@ -61,8 +62,9 @@ let message_off ~note ~timestamp ~volume ~channel () =
 
 
 
-let handle_error = function Ok _ -> () | Error _ -> ()
+let handle_error = function Ok _ -> () | Error e-> (Logs.err (fun m -> m "Encountered error: %s\n" (error_to_string e)))
 
 let write_output {Device.device; Device.device_id} msg =
+  Logs.info (fun m -> m "Creating device with id %s\n" (string_of_int device_id));
   Printf.printf "Creating device with id %s\n" (string_of_int device_id);
   Portmidi.write_output device msg |> handle_error
