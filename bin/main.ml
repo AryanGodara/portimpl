@@ -1,11 +1,14 @@
 let main () =
-  let dev = Midi.Device.create 0 in
+  let _x = List_devices.list_devices () in
+
+  let dev = Midi.Device.create 1 in
   let channel = 0 in
-  let note = char_of_int 60 in
-  let volume = char_of_int 100 in
+  let note = char_of_int 100 in
+  let volume = char_of_int 125 in
 
   Midi.(
   (* Initialize Portmidi *)
+    Printf.printf "Calling init";
     init ();
   
   (* Initialize Logs *)
