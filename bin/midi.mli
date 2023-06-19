@@ -1,5 +1,8 @@
 module Event = Portmidi.Portmidi_event
 
+val init : unit -> unit
+val init_logs : unit -> unit
+
 val error_to_string : Portmidi.Portmidi_error.t -> string
 
 val message_on : 
@@ -18,3 +21,5 @@ end
 type note_data = { note : char; volume : char}
 
 val write_output : Device.t -> Portmidi.Portmidi_event.t list -> unit
+
+val handle_error : ('a, Portmidi.Portmidi_error.t) result -> unit
