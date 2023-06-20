@@ -13,5 +13,4 @@ let list_devices () =
         Printf.printf "     input: %B\n" di.Portmidi.Device_info.input;
         Printf.printf "    output: %B\n" di.Portmidi.Device_info.output
   done;
-  Portmidi.terminate ();
   0

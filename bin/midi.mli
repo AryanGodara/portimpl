@@ -1,7 +1,6 @@
 module Event = Portmidi.Portmidi_event
 
 val init : unit -> unit
-val init_logs : unit -> unit
 
 val error_to_string : Portmidi.Portmidi_error.t -> string
 
@@ -15,7 +14,6 @@ module Device : sig
 
   val create : int -> t
   val shutdown : t -> (unit, Portmidi.Portmidi_error.t) result
-  val turn_off_everything : int -> (unit, Portmidi.Portmidi_error.t) result
 end
 
 type note_data = { note : char; volume : char}

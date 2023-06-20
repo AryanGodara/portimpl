@@ -1,29 +1,29 @@
 let main () =
-  let _x = List_devices.list_devices () in
+
+  (*TODO: Initialize Portmidi *)
+  Printf.printf "Calling init";
+  Midi.init ();
+
+  (*TODO: List Devices  *)
+  List_devices.list_devices () |> ignore;
 
   let dev = Midi.Device.create 1 in
   let channel = 0 in
-  let note = char_of_int 100 in
-  let volume = char_of_int 125 in
+  let note = 10 in
+  let volume = 25 in
 
-  Midi.(
-  (* Initialize Portmidi *)
-    Printf.printf "Calling init";
-    init ();
-  
-  (* Initialize Logs *)
-    init_logs ();
+  for i = 1 to 5 do
 
   (* Send the note_on signal *)
-    write_output dev [ message_on ~note ~timestamp:0l ~volume ~channel () ];
+  Midi.(write_output dev [ message_on ~note:(char_of_int (i*note)) ~timestamp:0l ~volume:(char_of_int (i*volume)) ~channel () ]);
 
-  (* Sleep for 5 seconds  *)
-    Unix.sleep 5;
+
+  (* Sleep for 2 seconds  *)
+  Unix.sleep 2;
 
   (* Send the note_off signal *)
-    write_output dev [ message_off ~note ~timestamp:0l ~volume ~channel () ];
+  Midi.(write_output dev [ message_off ~note:(char_of_int (i*note)) ~timestamp:0l ~volume:(char_of_int (i*volume)) ~channel () ]);
 
-    Device.shutdown dev |> Midi.handle_error;
-    )
+  done
 
 let () = main ()
