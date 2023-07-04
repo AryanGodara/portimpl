@@ -16,6 +16,7 @@ module Device = struct
 
 
   let shutdown { device; device_id = _ } =
+    print_endline "Shutting down midi device";
     let* _ =
       Portmidi.write_output device
         [
