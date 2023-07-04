@@ -7,6 +7,8 @@ let listen_address = Unix.inet_addr_loopback
 let port = 9000
 let backlog = 10
 
+let string_to_char s =
+    char_of_int @@ int_of_string s
 
 let handle_message msg =
     match msg with
@@ -14,8 +16,8 @@ let handle_message msg =
     | _ ->
     let param_list = Str.split_delim (Str.regexp " ") msg in
     match param_list with
-    | [_;_;_] -> let int_param_list =  [0;50;125] in 
-    Client.play_note (Array.of_list int_param_list) ();
+    | [_;_;_] -> let char_param_list = List.map string_to_char param_list in
+    Client.play_note (Array.of_list char_param_list) ();
     "Values sent to MIDI to play your note"
     | _      -> "Invalid Input: Provide 3 parameters"
 
