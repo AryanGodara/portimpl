@@ -1,5 +1,4 @@
 let main () =
-
   (*TODO: Initialize Portmidi *)
   print_endline "Calling Midi.init ()\n";
   Midi.init ();
@@ -9,6 +8,6 @@ let main () =
   List_devices.list_devices () |> ignore;
   ()
 
-let () = 
+let () =
   main ();
-  Tcp_server.run_server ();
+  Tcp_server.run_server ()

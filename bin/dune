@@ -1,4 +1,15 @@
 (executable
  (public_name portimpl)
  (name main)
- (libraries portimpl cmdliner logs portmidi runtime_events lwt logs.lwt stdio str lwt.unix unix))
+ (libraries
+  portimpl
+  cmdliner
+  logs
+  portmidi
+  runtime_events
+  lwt
+  logs.lwt
+  stdio
+  str
+  lwt.unix
+  unix))
