@@ -1,5 +1,3 @@
-(* let dev = Midi.Device.create 1 *)
-
 let play_note param_list () =
   (*TODO: Initialize Portmidi *)
   print_endline "Calling Midi.init ()\n";
@@ -18,7 +16,7 @@ let play_note param_list () =
   Midi.(write_output dev [ message_on ~note ~timestamp:0l ~volume ~channel () ]);
 
   (* Sleep for 2 seconds  *)
-  Unix.sleep 2;
+  Unix.sleepf 0.5;
 
   (* Send the note_off signal *)
   Midi.(
