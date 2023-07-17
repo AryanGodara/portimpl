@@ -9,12 +9,15 @@ let string_to_char s = char_of_int @@ int_of_string s
 
 let handle_message msg =
   match msg with
-  | "quit" -> "quit"
-  | "read" -> string_of_int !counter
-  | "inc" ->
-      counter := !counter + 1;
-      "Counter has been incremented"
-  | _ -> "Unknown command"
+  | "exit" -> None
+  | _ -> (
+      let param_list = Str.split_delim (Str.regexp " ") msg in
+      match param_list with
+      | [ _; _; _ ] as param_list ->
+          let char_param_list = List.map string_to_char param_list in
+          Play.play_note (Array.of_list char_param_list) ();
+          Some "Values sent to MIDI to play your note"
+      | _ -> Some "Invalid Input: Provide 3 parameters")
 
 let rec handle_request server_socket =
   print_endline "Waiting for request";
@@ -25,12 +28,13 @@ let rec handle_request server_socket =
   let message = Bytes.sub_string buffer 0 num_bytes in
   let reply = handle_message message in
   match reply with
-  | "quit" ->
+  | None ->
       print_endline "Quitting Server...";
-      Lwt_unix.sendto server_socket (Bytes.of_string reply) 0
-        (String.length reply) [] client_address
+      Lwt_unix.sendto server_socket
+        (Bytes.of_string "Quitting")
+        0 (String.length "Quitting") [] client_address
       >>= fun _ -> Lwt.return ()
-  | _ ->
+  | Some reply ->
       Lwt_unix.sendto server_socket (Bytes.of_string reply) 0
         (String.length reply) [] client_address
       >>= fun _ -> handle_request (Lwt.return server_socket)

@@ -30,7 +30,7 @@ let rec handle_connection ic oc () =
   | None -> Logs_lwt.info (fun m -> m "Connection closed") >>= Lwt.return
 
 let accept_connection conn =
-  Logs_lwt.info (fun m -> m "Accepting connection from client\n") |> ignore;
+  Logs_lwt.info (fun m -> m "Accepting connection from client\n") >>= fun () ->
   (* Printf.printf "Accepting connection from client\n%!"; *)
   let fd, _ = conn in
   let ic = Lwt_io.of_fd ~mode:Lwt_io.Input fd in
